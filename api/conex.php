@@ -11,11 +11,45 @@ class conectarDB{
 		or die (mysql_error());
 		$this->conexion->set_charset("utf8");
 	}
-	//BUSCAR
-	public function buscar($tabla){
+	//mostrar TODOS LOS PRODUCTOS
+	public function mostrarTodos($tabla){
+		//Se crea la consulta
 		$resultado = $this->conexion->query("SELECT * FROM $tabla") or die ($this->conexion->error);
+		//se agregan los resultados a unn nuevo array para convertirlos en json
 		if($resultado){
-			return $resultado->fetch_all(MYSQLI_ASSOC);
+			$respuesta['productos'] = array();
+			foreach($resultado as $key){
+				$datos = array();
+				foreach($key as $k => $v){
+					$datos[$k] = $v;
+				};
+				array_push($respuesta['productos'], $datos);
+					
+			}
+			//array nuevo se convierte en json
+			echo json_encode($respuesta);
+		}else{
+			return false;
+		}
+	}
+	
+	//BUSCAR POR NOMBRE
+	public function buscar($tabla, $producto){
+		//ACÁ SE BUSCARA POR EL NOMBRE DLE PRODUCTO MIENTRAS SE ESCRIBA EN EL INPUT
+		$resultado = $this->conexion->query("SELECT * FROM $tabla WHERE name LIKE '%".$producto."%'") or die ($this->conexion->error);
+		//se agregan los resultados a unn nuevo array para convertirlos en json
+		if($resultado){
+			$respuesta['producto'] = array();
+			foreach($resultado as $key){
+				$datos = array();
+				foreach($key as $k => $v){
+					$datos[$k] = $v;
+				};
+				array_push($respuesta['producto'], $datos);
+					
+			}
+			//array nuevo se convierte en json
+			echo json_encode($respuesta);
 		}else{
 			return false;
 		}

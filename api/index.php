@@ -1,8 +1,19 @@
 <?php
     include "conex.php";
-    echo "<h1>Hola</h1>";
     $productos = new conectarDB();
-    $respuesta = array();
-    $p = $productos->buscar("product");
-    var_dump($p);
+
+    if ($_SERVER['REQUESTE_METHOD']='GET') {
+        $consulta = $_GET['consulta'];
+        $nombreProducto = $_GET['nombreProducto'];
+        if ($consulta == "") {
+            $p = $productos->mostrarTodos("product");
+            echo ($p);
+        }
+        if ($consulta == 'buscar') {
+            $p = $productos->buscar("product",$nombreProducto);
+            echo ($p);
+        }
+        
+    }
+    
 ?>
