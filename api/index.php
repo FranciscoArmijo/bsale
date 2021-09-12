@@ -13,6 +13,10 @@
             $p = $productos->buscar("product",$nombreProducto);
             echo ($p);
         }
+        if ($consulta == 'categorias') {
+            $p = $productos->categorias();
+            echo ($p);
+        }
         
     }
     

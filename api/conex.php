@@ -54,6 +54,27 @@ class conectarDB{
 			return false;
 		}
 	}
+
+	//obtener als categorias
+
+	public function categorias(){
+		$resultado = $this->conexion->query("SELECT DISTINCT category FROM product") or die ($this->conexion->error);
+		if($resultado){
+			$respuesta['categorias'] = array();
+			foreach($resultado as $key){
+				$datos = array();
+				foreach($key as $k => $v){
+					$datos[$k] = $v;
+				};
+				array_push($respuesta['categorias'], $datos);
+					
+			}
+			//array nuevo se convierte en json
+			echo json_encode($respuesta);
+		}else{
+			return false;
+		}
+	}
 }
 
 ?>

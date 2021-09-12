@@ -1,5 +1,6 @@
 const divProductos = document.getElementById('divProductos');
 const buscador = document.getElementById('buscador');
+const divCategorias = document.getElementById('categorias');
 
 eventlisteners();
 
@@ -7,6 +8,7 @@ function eventlisteners(){
     document.addEventListener('DOMContentLoaded', ()=>{
         borrarProductos();
         cargarTodos();
+        cargarCategorias()
     });
     //document.addEventListener('DOMContentLoaded', cargarTodos);
     buscador.addEventListener('input',(e)=>{
@@ -98,5 +100,27 @@ function llenarCards(resultado){
         //agregar tarjetas al div principal
         divProductos.appendChild(tarjeta);
     }
-    
+}
+//las categoarias se obtienen de los registros de la tabla sql y se cargan los registros unicos
+const cargarCategorias = async()=>{
+    const url =`http://localhost/TIENDABSALE/api/?consulta=categorias&nombreProducto=`;
+    const respuesta = await fetch(url);
+    const resultado = await respuesta.json();
+    console.log(resultado);
+    botonesCategorias(resultado);
+}
+
+function botonesCategorias(categorias){
+    for (let i = 0; i < categorias.categorias.length; i++) {
+        const divBotonCategoria = document.createElement('div');
+        const botonCategoria = document.createElement('a');
+        botonCategoria.classList.add('btn','btn-primary');
+        botonCategoria.innerHTML = categorias.categorias[i].category
+        divBotonCategoria.classList.add('col');
+        divBotonCategoria.appendChild(botonCategoria);
+
+        divCategorias.appendChild(divBotonCategoria);
+
+        console.log(categorias.categorias[i]);
+    }
 }
